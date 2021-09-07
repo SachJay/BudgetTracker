@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 var fs = require("fs");
+const { MongoClient } = require('mongodb');
 
 const app = express();
 app.use(cors());
@@ -11,15 +12,15 @@ app.get('/', (req, res) => {
     });
 });
 
-app.get('/:name', (req, res, next) => {
-    let name = req.params.name;
+app.get('/data', (req, res, next) => {
+    var data ;
 
     fs.readFile("C:/Users/SachJ/Downloads/accountactivity - accountactivity.csv", 'utf8', function(err, buf) {
         if (err) {
             return console.log(err);
         }
 
-        var data = buf.split('\n');
+        data = buf.split('\n');
         data = data.map(x => {
             var interaction = x.split(",");
             return {
@@ -32,14 +33,27 @@ app.get('/:name', (req, res, next) => {
             }
         });
 
-        console.log(JSON.stringify(data));
+        res.json(data);
     });
+});
 
-    res.json({
-        message: `Hello ${name}`
+app.get('/db', (req, res, next) => {
+    const uri = "mongodb+srv://test:test@cluster0.ke4o7.mongodb.net/Cluster0?retryWrites=true&w=majority";
+    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    client.connect(err => {
+      const collection = client.db("Cluster0").collection("devices");
+      
+      res.json(collection);
+
+      client.close();
     });
 });
 
 app.listen(2020, () => {
     console.log('server is listening on port 2020');
 });
+
+
+
+
+
