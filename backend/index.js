@@ -38,22 +38,33 @@ app.get('/data', (req, res, next) => {
 });
 
 app.get('/db', (req, res, next) => {
-    const uri = "mongodb+srv://test:test@cluster0.ke4o7.mongodb.net/Cluster0?retryWrites=true&w=majority";
-    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-    client.connect(err => {
-      const collection = client.db("Cluster0").collection("devices");
-      
-      res.json(collection);
-
-      client.close();
-    });
+    res.json(main());
 });
 
 app.listen(2020, () => {
     console.log('server is listening on port 2020');
 });
 
-
-
+async function main(){
+    const uri = "mongodb+srv://test:test@cluster0.ke4o7.mongodb.net/Cluster0?retryWrites=true&w=majority";
+    const client = new MongoClient(uri);
+    
+    try {
+        await client.connect();
+        console.log('Connected successfully to server');
+        const db = client.db("BudgetTracker");
+        const collection = db.collection('Interactions');
+        
+        var stuff = collection.find({});
+ 
+        console.log(stuff);
+        return stuff;
+        
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await client.close();
+    }
+}
 
 

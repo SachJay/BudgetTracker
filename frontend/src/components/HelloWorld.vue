@@ -1,15 +1,14 @@
 <template>
   <div class="hello">
-    <h1>{{ title }}</h1>
+    <h1>{{ testBackend() }}</h1>
     <button v-on:click="testBackend()">Button</button>
 
-    <div v-for="inter in inters" :key="inter.name">
-      <h3>{{ inter.name }}</h3>
-      <p>-${{ inter.cost }} | +${{ inter.income }}</p>
-      <h1></h1>
-      <br>
-    </div>
-
+    <table>
+      <tr v-for="inter in inters" :key="inter.name">
+        <td>{{ inter.name }}</td>
+        <td>-${{ inter.cost }} | +${{ inter.income }}</td>
+      </tr>
+    </table>
   </div>
 </template>
 
