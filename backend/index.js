@@ -57,7 +57,6 @@ async function main(){
         
         var stuff = collection.find({});
  
-        console.log(stuff);
         return stuff;
         
     } catch (e) {
