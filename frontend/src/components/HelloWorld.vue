@@ -1,7 +1,6 @@
 <template>
   <div class="hello">
     <h1>{{ testBackend() }}</h1>
-    <button v-on:click="testBackend()">Button</button>
 
     <table>
       <tr v-for="inter in inters" :key="inter.name">
