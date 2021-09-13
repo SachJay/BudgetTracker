@@ -22,11 +22,11 @@
       inters: Object,
     },
     methods: {
-      testBackend() {
+      testBackend() { //retrieves data from backend
           fetch("http://localhost:2020/data")
             .then(response => response.json())
             .then(data => {
-              this.inters = data;
+              this.inters = data; 
             });
       }
     }
