@@ -37,8 +37,10 @@ app.get('/data', (req, res, next) => {
     });
 });
 
-app.get('/db', (req, res, next) => {
-    res.json(main());
+app.get('/db', async(req, res, next) => {
+    var result = await main();
+    console.log(result);
+    res.json(result);
 });
 
 app.listen(2020, () => {
@@ -48,21 +50,17 @@ app.listen(2020, () => {
 async function main(){
     const uri = "mongodb+srv://test:test@cluster0.ke4o7.mongodb.net/Cluster0?retryWrites=true&w=majority";
     const client = new MongoClient(uri);
-    
+    var result;
+
     try {
         await client.connect();
-        console.log('Connected successfully to server');
-        const db = client.db("BudgetTracker");
-        const collection = db.collection('Interactions');
-        
-        var stuff = collection.find({});
- 
-        return stuff;
+        result = await client.db("BudgetTracker").collection("Interactions").find({catagory: 0}).toArray();
         
     } catch (e) {
         console.error(e);
     } finally {
         await client.close();
+        return result;
     }
 }
 
