@@ -23,7 +23,7 @@
     },
     methods: {
       testBackend() { //retrieves data from backend
-          fetch("http://localhost:2020/data")
+          fetch("http://localhost:2020/getInteractions")
             .then(response => response.json())
             .then(data => {
               this.inters = data; 
