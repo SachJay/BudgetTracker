@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
     });
 });
 
-app.get('/data', (req, res, next) => {
+app.post('/saveInteractions', (req, res, next) => {
     var data ;
 
     fs.readFile("C:/Users/SachJ/Downloads/accountactivity - accountactivity.csv", 'utf8', function(err, buf) {
@@ -35,6 +35,7 @@ app.get('/data', (req, res, next) => {
             }
         });
 
+        insertAll(data);
         res.json(data);
     });
 });
@@ -43,11 +44,6 @@ app.get('/getInteractions', async(req, res, next) => {
     var result = await pullAll();
     console.log(result);
     res.json(result);
-});
-
-app.post('/saveInteractions', async(req, res, next) => {
-    insertAll(req.body);
-    res.json("Success!");
 });
 
 app.listen(2020, () => {
@@ -77,16 +73,7 @@ async function insertAll(data) {
     try {
         await client.connect();
 
-        data =   {
-            "date": "09/07/2021",
-            "name": "OTHER",
-            "cost": "655.4",
-            "income": "0",
-            "amount": "2662.12",
-            "catagory": 0
-        };
-
-        result = await client.db("BudgetTracker").collection("Interactions").insertOne(data);
+        result = await client.db("BudgetTracker").collection("Interactions").insertMany(data);
         
     } catch (e) {
         console.error(e);
