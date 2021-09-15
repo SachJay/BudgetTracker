@@ -1,34 +1,33 @@
 <template>
   <div class="hello">
-    <h1>{{ testBackend() }}</h1>
+    <h1>Titlesss</h1>
+    <ul v-for="interact in inters"  :key="interact._id">
+        <li>{{interact.name}}</li>
+    </ul>
 
-    <table>
-      <tr v-for="inter in inters" :key="inter.name">
-        <td>{{ inter.name }}</td>
-        <td>-${{ inter.cost }} | +${{ inter.income }}</td>
-      </tr>
-    </table>
   </div>
 </template>
 
 <script>
+//import Catagory from './Catagory.vue';
+
   export default {
-    data() {
-      return {
-        title: "Default",
-      }
-    },
+  //components: { Catagory },
     params: {
-      inters: Object,
+      inters: [],
     },
     methods: {
       testBackend() { //retrieves data from backend
           fetch("http://localhost:2020/getInteractions")
             .then(response => response.json())
             .then(data => {
-              this.inters = data; 
+              this.instance.inters = data;
             });
       }
+    },
+    beforeMount() {
+        this.testBackend();
+        this.inters = [{name: "test", _id:"sadsadsafgsadsa"}];
     }
   }
 </script>
