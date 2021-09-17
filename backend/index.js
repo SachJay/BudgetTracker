@@ -46,6 +46,10 @@ app.get('/getInteractions', async(req, res, next) => {
     res.json(result);
 });
 
+app.post('/saveCatagory', async(req, res, next) => {
+    res.json("received catagory");
+});
+
 app.listen(2020, () => {
     console.log('server is listening on port 2020');
 });
