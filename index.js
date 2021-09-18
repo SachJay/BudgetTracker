@@ -50,6 +50,10 @@ app.post('/saveCatagory', async(req, res, next) => {
     res.json("received catagory");
 });
 
+app.post('/deleteCatagory', async(req, res, next) => {
+    res.json("deleted catagory");
+});
+
 app.listen(2020, () => {
     console.log('server is listening on port 2020');
 });
