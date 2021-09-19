@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>Titlesss</h1>
-    <ul v-for="interact in inters"  :key="interact._id">
+    <ul v-for="interact in interactions"  :key="interact._id">
         <li>{{interact.name}}</li>
     </ul>
 
@@ -12,22 +12,16 @@
 //import Catagory from './Catagory.vue';
 
   export default {
-  //components: { Catagory },
-    params: {
-      inters: [],
-    },
-    methods: {
-      testBackend() { //retrieves data from backend
-          fetch("http://localhost:2020/getInteractions")
-            .then(response => response.json())
-            .then(data => {
-              this.instance.inters = data;
-            });
+    data() {
+      return {
+        interactions: []
       }
     },
-    beforeMount() {
-        this.testBackend();
-        this.inters = [{name: "test", _id:"sadsadsafgsadsa"}];
+   async created() {
+  // GET request using fetch with async/await
+      const response = await fetch("http://localhost:2020/getInteractions");
+      const data = await response.json();
+      this.interactions = data;
     }
   }
 </script>
