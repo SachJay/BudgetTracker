@@ -2,26 +2,33 @@
   <div class="hello">
     <h1>Titlesss</h1>
     <ul v-for="interact in interactions"  :key="interact._id">
-        <li>{{interact.name}}</li>
+        <li>
+          <Interaction :name="interact.name"></Interaction>
+        </li>
     </ul>
+    <h3>Total: {{ interact.totalCost }}</h3>
 
   </div>
 </template>
 
 <script>
 //import Catagory from './Catagory.vue';
+import Interaction from './Interaction.vue';
 
   export default {
+    components: { Interaction },
     data() {
       return {
-        interactions: []
+        interactions: [],
+        totalCost: 0
       }
     },
    async created() {
   // GET request using fetch with async/await
       const response = await fetch("http://localhost:2020/getInteractions");
       const data = await response.json();
-      this.interactions = data;
+      this.interactions = data.intertactions;
+      this.totalCost = data.totalCost;
     }
   }
 </script>

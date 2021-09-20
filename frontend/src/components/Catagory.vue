@@ -2,14 +2,18 @@
   <div class="hello">
     <h3>St</h3>
     <ul v-for="interact in interacts"  :key="interact._id">
-        <li>{{interact.name}}</li>
+        <li>
+          <Interaction name="interact"></Interaction>
+        </li>
     </ul>
 
   </div>
 </template>
 
 <script>
+import Interaction from './Interaction.vue';
  export default {
+  components: { Interaction },
     props: {
       interacts: []
     },
