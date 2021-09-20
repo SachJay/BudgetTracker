@@ -41,8 +41,12 @@ app.post('/saveInteractions', (req, res, next) => {
 });
 
 app.get('/getInteractions', async(req, res, next) => {
-    var result = await pullAll();
-    console.log(result);
+    var interactions = await pullAll();
+    var result = {
+        interactions: interactions,
+        totalCost: interactions.reduce(x => x.cost ? x.cost : 0)
+    }
+
     res.json(result);
 });
 
