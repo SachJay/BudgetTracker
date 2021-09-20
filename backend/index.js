@@ -42,9 +42,19 @@ app.post('/saveInteractions', (req, res, next) => {
 
 app.get('/getInteractions', async(req, res, next) => {
     var interactions = await pullAll();
+    var interactionByCatagory = [
+        { 
+            id: 0,
+            name: "all",
+            interactions: []
+        }
+    ];
+    
+    interactions.forEach(x => interactionByCatagory[x.catagory].interactions.push(x));
+
     var result = {
-        interactions: interactions,
-        totalCost: interactions.reduce(x => x.cost ? x.cost : 0)
+        data: interactionByCatagory,
+        totalCost: interactions.reduce((total, x) => x.cost ? (+total + +x.cost) : total)
     }
 
     res.json(result);
