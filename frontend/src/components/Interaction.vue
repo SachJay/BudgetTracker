@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-      <h3>{{ name }}</h3>
+      <h6>{{ name }}</h6><br>
   </div>
 </template>
 
@@ -11,7 +11,9 @@
     }
   }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.hello {
+    height: 10px;
+  }
+
 </style>

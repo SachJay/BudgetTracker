@@ -1,13 +1,14 @@
 <template>
   <div class="hello">
-    <h1>Titlesss</h1>
-    <ul v-for="interact in interactions"  :key="interact._id">
-        <li>
+    <h1>Titlessss</h1>
+
+    <h3>Total Cost: {{ totalCost }}</h3>
+    <ul>
+        <li v-for="interact in interactions"  :key="interact._id">
           <Interaction :name="interact.name"></Interaction>
         </li>
     </ul>
-    <h3>Total: {{ interact.totalCost }}</h3>
-
+    
   </div>
 </template>
 
@@ -27,8 +28,8 @@ import Interaction from './Interaction.vue';
   // GET request using fetch with async/await
       const response = await fetch("http://localhost:2020/getInteractions");
       const data = await response.json();
-      this.interactions = data.intertactions;
-      this.totalCost = data.totalCost;
+      this.interactions = data.data[0].interactions;
+      this.totalCost = data.data[0].totalCost;
     }
   }
 </script>
@@ -40,6 +41,7 @@ import Interaction from './Interaction.vue';
   }
   ul {
     list-style-type: none;
+    display: inline-block;
     padding: 0;
   }
   li {
