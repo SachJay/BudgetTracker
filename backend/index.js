@@ -50,27 +50,27 @@ app.get('/getInteractions', async(req, res, next) => {
 
     var interactionByCatagory = {
         0: { 
-            name: "all",
+            name: "All",
             interactions: [],
             totalCost: 0
         }, 
         1: { 
-            name: "food",
+            name: "Food",
             interactions: [],
             totalCost: 0
         }, 
         2: { 
-            name: "eating out",
+            name: "Eating Out",
             interactions: [],
             totalCost: 0
         }, 
         3: { 
-            name: "games",
+            name: "Games",
             interactions: [],
             totalCost: 0
         },
         4: { 
-            name: "other",
+            name: "Other",
             interactions: [],
             totalCost: 0
         },  

@@ -1,6 +1,8 @@
 <template>
-  <div class="hello">
-      <h6>{{ name }}</h6><br>
+  <div class="interaction">
+      <p>{{ name }}</p>
+      <button>Change Catagory</button>
+      <button>Delete</button>
   </div>
 </template>
 
@@ -8,12 +10,18 @@
  export default {
     props: {
         name: String
+    },
+    method: {
+      deleteInteraction(){
+        
+      }
     }
   }
 </script>
 <style scoped>
-.hello {
-    height: 10px;
+  .interaction {
+    border-style: dashed;
+    margin-bottom: 10px;
+    padding: 15px 5px;
   }
-
 </style>

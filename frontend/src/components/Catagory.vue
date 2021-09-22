@@ -1,10 +1,10 @@
 <template>
-  <div class="hello">
+  <div class="catagory">
     <h2>{{ name }}</h2>
     <ul>
-        <li v-for="interact in interactions"  :key="interact._id">
-          <Interaction :name="interact.name"></Interaction>
-        </li>
+        <div v-for="interact in interactions"  :key="interact._id">
+          <Interaction :id="interact._id" :name="interact.name"></Interaction>
+        </div>
     </ul>
     <h3>Total Cost: {{ totalCost }}</h3>
   </div>
@@ -24,7 +24,9 @@ import Interaction from './Interaction.vue';
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.hello {
-  border: 5px;
-}
+  .catagory {
+    border-style: solid;
+    padding: 50px 20px;
+    margin-bottom: 50px;
+  }
 </style>
