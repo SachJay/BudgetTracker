@@ -31,7 +31,7 @@ app.post('/saveInteractions', (req, res, next) => {
                 cost: interaction[2],
                 income: interaction[3],
                 amount: interaction[4],
-                catagory: 0
+                catagory: 1
             }
         });
 
@@ -42,20 +42,48 @@ app.post('/saveInteractions', (req, res, next) => {
 
 app.get('/getInteractions', async(req, res, next) => {
     var interactions = await pullAll();
+
+    if(interactions == undefined){
+        res.json("failed");
+        return;
+    }
+
     var interactionByCatagory = {
         0: { 
             name: "all",
             interactions: [],
             totalCost: 0
-        }
+        }, 
+        1: { 
+            name: "food",
+            interactions: [],
+            totalCost: 0
+        }, 
+        2: { 
+            name: "eating out",
+            interactions: [],
+            totalCost: 0
+        }, 
+        3: { 
+            name: "games",
+            interactions: [],
+            totalCost: 0
+        },
+        4: { 
+            name: "other",
+            interactions: [],
+            totalCost: 0
+        },  
     };
     
     interactions.forEach(x => interactionByCatagory[x.catagory].interactions.push(x));
 
-    var total = 0;
-    interactionByCatagory[0].interactions.forEach(x => total = Number(total) + Number(x.cost));
-    interactionByCatagory[0].totalCost = total.toFixed(2);
-
+    Object.keys(interactionByCatagory).forEach(x => {
+        var total = 0;
+        interactionByCatagory[x].interactions.forEach(x => total = Number(total) + Number(x.cost));
+        interactionByCatagory[x].totalCost = total.toFixed(2);
+    });
+    
     var result = {
         data: interactionByCatagory,
         totalCost: 0
@@ -82,7 +110,7 @@ async function pullAll() {
 
     try {
         await client.connect();
-        result = await client.db("BudgetTracker").collection("Interactions").find({catagory: 0}).toArray();
+        result = await client.db("BudgetTracker").collection("Interactions").find().toArray();
         
     } catch (e) {
         console.error(e);
