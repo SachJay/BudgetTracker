@@ -1,35 +1,30 @@
 <template>
   <div class="hello">
     <h1>Titlessss</h1>
-
-    <h3>Total Cost: {{ totalCost }}</h3>
-    <ul>
-        <li v-for="interact in interactions"  :key="interact._id">
-          <Interaction :name="interact.name"></Interaction>
-        </li>
-    </ul>
     
+    <div v-for="catagories in data"  :key="catagories.name">
+      <Catagory :name="catagories.name" :interactions="catagories.interactions" :totalCost="catagories.totalCost"></Catagory>
+    </div>
+
   </div>
 </template>
 
 <script>
-//import Catagory from './Catagory.vue';
-import Interaction from './Interaction.vue';
+import Catagory from './Catagory.vue';
 
   export default {
-    components: { Interaction },
+    components: { Catagory },
     data() {
       return {
-        interactions: [],
-        totalCost: 0
+        data: {}
       }
     },
    async created() {
   // GET request using fetch with async/await
       const response = await fetch("http://localhost:2020/getInteractions");
       const data = await response.json();
-      this.interactions = data.data[0].interactions;
-      this.totalCost = data.data[0].totalCost;
+      this.data = Object.values(data.data);
+      console.log("SUCCESS");
     }
   }
 </script>
