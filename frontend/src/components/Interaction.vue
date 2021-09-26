@@ -1,18 +1,20 @@
 <template>
   <div class="interaction">
-      <p>{{ name }}</p>
+      <p>{{ name }}: {{ cost }}</p>
       <button>Change Catagory</button>
-      <button>Delete</button>
+      <button :click="deleteInteraction(id)">Delete</button>
   </div>
 </template>
 
 <script>
  export default {
     props: {
-        name: String
+        name: String,
+        id: String,
+        cost: Number
     },
     method: {
-      deleteInteraction(){
+      deleteInteraction(id){
         
       }
     }
