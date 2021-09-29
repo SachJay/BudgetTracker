@@ -3,7 +3,7 @@
     <h1>Bank Statement Parser</h1>
     
     <div v-for="catagories in data"  :key="catagories.name">
-      <Catagory :name="catagories.name" :interactions="catagories.interactions" :totalCost="catagories.totalCost"></Catagory>
+      <Catagory :name="catagories.name" :interactions="catagories.interactions" :totalCost="parseInt(catagories.totalCost)"></Catagory>
     </div>
 
   </div>

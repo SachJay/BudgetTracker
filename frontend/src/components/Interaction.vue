@@ -2,21 +2,26 @@
   <div class="interaction">
       <p>{{ name }}: {{ cost }}</p>
       <button>Change Catagory</button>
-      <button :click="deleteInteraction(id)">Delete</button>
+      <button>Delete</button>
+
+      <Modal
+        v-show="true"
+        @close="closeModal"
+      />
   </div>
 </template>
 
 <script>
+import Modal from './Modal.vue';
  export default {
+  components: { Modal },
     props: {
         name: String,
         id: String,
         cost: Number
     },
     method: {
-      deleteInteraction(id){
-        
-      }
+
     }
   }
 </script>

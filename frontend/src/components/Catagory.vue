@@ -3,7 +3,7 @@
     <h2>{{ name }}</h2>
     <ul>
         <div v-for="interact in interactions"  :key="interact._id">
-          <Interaction :id="interact._id" :name="interact.name" :cost="interact.cost"></Interaction>
+          <Interaction :id="interact._id" :name="interact.name" :cost="parseInt(interact.cost)"></Interaction>
         </div>
     </ul>
     <h3>Total Cost: {{ totalCost }}</h3>
