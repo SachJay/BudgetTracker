@@ -1,27 +1,45 @@
 <template>
   <div class="interaction">
+    <div v-if="editing">
       <p>{{ name }}: {{ cost }}</p>
-      <button>Change Catagory</button>
+      <input v-model="inputValue">
+      <button v-on:click="this.saveChange()">Submit</button>
+    </div>
+    <div v-else>
+      <p>{{ name }}: {{ cost }}</p>
+      <p>Catagory: {{ catagory }}</p>
+      <button v-on:click="editing = !editing">Change Catagory</button>
       <button>Delete</button>
-
-      <Modal
-        v-show="true"
-        @close="closeModal"
-      />
+    </div>
   </div>
 </template>
 
 <script>
-import Modal from './Modal.vue';
+import axios from 'axios';
+
  export default {
-  components: { Modal },
+  components: { },
     props: {
         name: String,
         id: String,
-        cost: Number
+        cost: Number,
+        catagory: Number
     },
-    method: {
+    data() {
+      return { 
+        editing: false,
+        inputValue: ""
+      }
+    },
+    methods: {
+      saveChange() {
+        
+        console.log(this.inputValue);
+        axios.post("http://localhost:2020/changeCatagory?name="+this.$props.name+"&catagory="+this.inputValue)
+          .then(response => this.articleId = response.data.id);
 
+        this.editing = !this.editing
+      }
     }
   }
 </script>
