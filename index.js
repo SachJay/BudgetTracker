@@ -30,8 +30,7 @@ app.post('/saveInteractions', (req, res, next) => {
                 name: interaction[1],
                 cost: interaction[2],
                 income: interaction[3],
-                amount: interaction[4],
-                catagory: 1
+                amount: interaction[4]
             }
         });
 
@@ -40,8 +39,15 @@ app.post('/saveInteractions', (req, res, next) => {
     });
 });
 
+app.post('/changeCatagory', async(req, res, next) => {
+    console.log(req.query);
+    //TODO: save/update inputs
+    res.send("Success");
+});
+
 app.get('/getInteractions', async(req, res, next) => {
     var interactions = await pullAll();
+    var catagoryTable = await getCatagoryTable();
 
     if(interactions == undefined){
         res.json("failed");
@@ -76,7 +82,7 @@ app.get('/getInteractions', async(req, res, next) => {
         },  
     };
     
-    interactions.forEach(x => interactionByCatagory[x.catagory].interactions.push(x));
+    interactions.forEach(x => interactionByCatagory[catagoryTable[x.name] != null ? catagoryTable[x.name] : 0].interactions.push(x));
 
     Object.keys(interactionByCatagory).forEach(x => {
         var total = 0;
@@ -137,3 +143,26 @@ async function insertAll(data) {
     }
 }
 
+app.get('/getCatagoryTable', async(req, res, next) => {
+   res.json(await getCatagoryTable());
+});
+
+async function getCatagoryTable() {
+    const client = new MongoClient(uri);
+    var table;
+
+    try {
+        await client.connect();
+        result = await client.db("BudgetTracker").collection("Catagories").find().toArray();
+        var table = {};
+        result.forEach(x => {
+            table[x.name] = x.catagory;
+        });
+    } catch (e) {
+        console.error(e);
+
+    } finally {
+        await client.close();
+        return table;
+    }
+}
