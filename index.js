@@ -41,7 +41,11 @@ app.post('/saveInteractions', (req, res, next) => {
 
 app.post('/changeCatagory', async(req, res, next) => {
     console.log(req.query);
-    //TODO: save/update inputs
+    var data = req.query;
+    data.catagory = parseInt(data.catagory);
+  
+
+    updateOneCatagory(data);
     res.send("Success");
 });
 
@@ -134,6 +138,23 @@ async function insertAll(data) {
         await client.connect();
 
         result = await client.db("BudgetTracker").collection("Interactions").insertMany(data);
+        
+    } catch (e) {
+        console.error(e);
+        
+    } finally {
+        await client.close();
+    }
+}
+
+
+async function updateOneCatagory(data) {
+    const client = new MongoClient(uri);
+    var queryKey = { name: data.name };
+    try {
+        await client.connect();
+
+        result = await client.db("BudgetTracker").collection("Catagories").updateOne(queryKey, {$set: data}, { upsert: true });
         
     } catch (e) {
         console.error(e);
