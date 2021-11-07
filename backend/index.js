@@ -58,7 +58,16 @@ app.get('/getInteractions', async(req, res, next) => {
         return;
     }
 
-    var interactionByCatagory = await getCatagories();
+    var catagories = await getCatagories();
+
+    var interactionByCatagory = {};
+    catagories.forEach(x => {
+        interactionByCatagory[x] = {
+            interactions: [],
+            totalCost: 0
+        };
+    });
+
     interactions.forEach(x => interactionByCatagory[catagoryTable[x.name] != null ? catagoryTable[x.name] : "Other"].interactions.push(x));
 
     Object.keys(interactionByCatagory).forEach(x => {
@@ -173,18 +182,11 @@ async function getCatagories() {
     try {
         await client.connect();
         result = await client.db("BudgetTracker").collection("Catagories").find().toArray();
-        var table = {};
-        result.forEach(x => {
-            table[x.name] = {
-                interactions: [],
-                totalCost: 0
-            };
-        });
     } catch (e) {
         console.error(e);
 
     } finally {
         await client.close();
-        return table;
+        return result.map(x => x.name);
     }
 }

@@ -1,4 +1,5 @@
 <template>
+
   <div class="catagory">
     <h2>{{ name }}</h2>
     <ul class="interactionBlock">
@@ -12,6 +13,8 @@
 
 <script>
 import Interaction from './Interaction.vue';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
  export default {
   components: { Interaction },
     props: {
