@@ -51,42 +51,15 @@ app.post('/changeCatagory', async(req, res, next) => {
 
 app.get('/getInteractions', async(req, res, next) => {
     var interactions = await pullAll();
-    var catagoryTable = await getCatagoryTable();
+    var catagoryTable = await getInteractionCatagoryTable();
 
     if(interactions == undefined){
         res.json("failed");
         return;
     }
 
-    var interactionByCatagory = {
-        0: { 
-            name: "All",
-            interactions: [],
-            totalCost: 0
-        }, 
-        1: { 
-            name: "Food",
-            interactions: [],
-            totalCost: 0
-        }, 
-        2: { 
-            name: "Eating Out",
-            interactions: [],
-            totalCost: 0
-        }, 
-        3: { 
-            name: "Games",
-            interactions: [],
-            totalCost: 0
-        },
-        4: { 
-            name: "Other",
-            interactions: [],
-            totalCost: 0
-        },  
-    };
-    
-    interactions.forEach(x => interactionByCatagory[catagoryTable[x.name] != null ? catagoryTable[x.name] : 0].interactions.push(x));
+    var interactionByCatagory = await getCatagories();
+    interactions.forEach(x => interactionByCatagory[catagoryTable[x.name] != null ? catagoryTable[x.name] : "Other"].interactions.push(x));
 
     Object.keys(interactionByCatagory).forEach(x => {
         var total = 0;
@@ -154,7 +127,7 @@ async function updateOneCatagory(data) {
     try {
         await client.connect();
 
-        result = await client.db("BudgetTracker").collection("Catagories").updateOne(queryKey, {$set: data}, { upsert: true });
+        result = await client.db("BudgetTracker").collection("InteractionCatagories").updateOne(queryKey, {$set: data}, { upsert: true });
         
     } catch (e) {
         console.error(e);
@@ -164,11 +137,36 @@ async function updateOneCatagory(data) {
     }
 }
 
-app.get('/getCatagoryTable', async(req, res, next) => {
-   res.json(await getCatagoryTable());
+app.get('/getInteractionCatagoryTable', async(req, res, next) => {
+   res.json(await getInteractionCatagoryTable());
 });
 
-async function getCatagoryTable() {
+async function getInteractionCatagoryTable() {
+    const client = new MongoClient(uri);
+    var table;
+
+    try {
+        await client.connect();
+        result = await client.db("BudgetTracker").collection("InteractionCatagories").find().toArray();
+        var table = {};
+        result.forEach(x => {
+            table[x.name] = x.catagory;
+        });
+    } catch (e) {
+        console.error(e);
+
+    } finally {
+        await client.close();
+        return table;
+    }
+}
+
+app.get('/getCatagoryTable', async(req, res, next) => {
+    res.json(await getCatagories());
+ });
+
+ 
+async function getCatagories() {
     const client = new MongoClient(uri);
     var table;
 
@@ -177,7 +175,10 @@ async function getCatagoryTable() {
         result = await client.db("BudgetTracker").collection("Catagories").find().toArray();
         var table = {};
         result.forEach(x => {
-            table[x.name] = x.catagory;
+            table[x.name] = {
+                interactions: [],
+                totalCost: 0
+            };
         });
     } catch (e) {
         console.error(e);

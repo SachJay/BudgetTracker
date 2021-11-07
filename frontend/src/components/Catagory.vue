@@ -1,8 +1,8 @@
 <template>
   <div class="catagory">
     <h2>{{ name }}</h2>
-    <ul>
-        <div v-for="interact in interactions"  :key="interact._id">
+    <ul class="interactionBlock">
+        <div class="singleInteraction" v-for="interact in interactions"  :key="interact._id">
           <Interaction :id="interact._id" :name="interact.name" :cost="parseInt(interact.cost)" :catagory="interact.catagory"></Interaction>
         </div>
     </ul>
@@ -24,9 +24,15 @@ import Interaction from './Interaction.vue';
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .catagory {
+  .interactionBlock {
     border-style: solid;
     padding: 50px 20px;
     margin-bottom: 50px;
+    display:flex;
+    flex-wrap: wrap;
+  }
+
+  .singleInteraction {
+    width: 33%;
   }
 </style>

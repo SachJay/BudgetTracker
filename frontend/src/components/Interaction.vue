@@ -7,7 +7,6 @@
     </div>
     <div v-else>
       <p>{{ name }}: {{ cost }}</p>
-      <p>Catagory: {{ catagory }}</p>
       <button v-on:click="editing = !editing">Change Catagory</button>
       <button>Delete</button>
     </div>
@@ -46,7 +45,7 @@ import axios from 'axios';
 <style scoped>
   .interaction {
     border-style: dashed;
-    margin-bottom: 10px;
-    padding: 15px 5px;
+    margin: 10px;
+    padding: 15px;
   }
 </style>

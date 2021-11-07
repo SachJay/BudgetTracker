@@ -2,8 +2,8 @@
   <div class="hello">
     <h1>Bank Statement Parser</h1>
     
-    <div v-for="catagories in data"  :key="catagories.name">
-      <Catagory :name="catagories.name" :interactions="catagories.interactions" :totalCost="parseInt(catagories.totalCost)"></Catagory>
+    <div v-for="catagories in Object.keys(data)"  :key="catagories">
+      <Catagory :name="catagories" :interactions="data[catagories].interactions" :totalCost="parseInt(data[catagories].totalCost)"></Catagory>
     </div>
 
   </div>
@@ -23,8 +23,8 @@ import Catagory from './Catagory.vue';
   // GET request using fetch with async/await
       const response = await fetch("http://localhost:2020/getInteractions");
       const data = await response.json();
-      this.data = Object.values(data.data);
-      console.log("SUCCESS");
+      this.data = data.data;
+      console.log(this.data);
     }
   }
 </script>
