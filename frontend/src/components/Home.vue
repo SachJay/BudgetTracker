@@ -1,7 +1,10 @@
 <template>
   <div class="hello">
     <h1>Bank Statement Parser</h1>
-    
+
+    <input @change="onFileChange" type="file">
+   <button v-on:click="this.uploadInteraction()">Save</button>
+
     <div v-for="catagories in Object.keys(data)"  :key="catagories">
       <Catagory :name="catagories" :interactions="data[catagories].interactions" :totalCost="parseInt(data[catagories].totalCost)"></Catagory>
     </div>
@@ -11,21 +14,33 @@
 
 <script>
 import Catagory from './Catagory.vue';
+import axios from 'axios';
 
   export default {
     components: { Catagory },
     data() {
       return {
-        data: {}
+        data: {},
+        file: ""
       }
     },
-   async created() {
+    async created() {
   // GET request using fetch with async/await
       const response = await fetch("http://localhost:2020/getInteractions");
       const data = await response.json();
       this.data = data.data;
-      console.log(this.data);
+    }, 
+    methods: {
+      onFileChange(event) {
+        this.file = event.target.files[0].name;
+      },
+      uploadInteraction() {
+
+        axios.post("http://localhost:2020/saveInteractions?file="+this.file)
+          .then(response => console.log(response));
+      }
     }
+    
   }
 </script>
 

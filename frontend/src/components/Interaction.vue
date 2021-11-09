@@ -2,10 +2,11 @@
   <div class="interaction">
     <div v-if="editing">
       <p>{{ name }}: {{ cost }}</p>
-     
-      <div  v-for="catagory in catagories"  :key="catagory">
-          <p>{{catagory}}</p>
-        </div>
+
+      <select v-model="inputValue">
+        <option v-for="catagory in catagories"  :key="catagory">{{catagory}}</option>
+      </select>
+
       <button v-on:click="this.saveChange()">Submit</button>
     </div>
     <div v-else>

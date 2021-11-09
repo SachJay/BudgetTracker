@@ -15,21 +15,21 @@ app.get('/', (req, res) => {
 });
 
 app.post('/saveInteractions', (req, res, next) => {
-    var data ;
+    var file = "C:/Users/SachJ/Downloads/" + req.query.file;
 
-    fs.readFile("C:/Users/SachJ/Downloads/accountactivity - accountactivity.csv", 'utf8', function(err, buf) {
+    fs.readFile(file, 'utf8', function(err, buf) {
         if (err) {
             return console.log(err);
         }
 
         data = buf.split('\n');
-        data = data.map(x => {
+        data = data.filter(x => x.split(",")[0] != "").map(x => {
             var interaction = x.split(",");
             return {
                 date: interaction[0],
                 name: interaction[1],
-                cost: interaction[2],
-                income: interaction[3],
+                cost: interaction[2] == "" ? 0 : parseInt(interaction[2]),
+                income: interaction[3] == "" ? 0 : parseInt(interaction[3]),
                 amount: interaction[4]
             }
         });
@@ -40,11 +40,13 @@ app.post('/saveInteractions', (req, res, next) => {
 });
 
 app.post('/changeCatagory', async(req, res, next) => {
-    console.log(req.query);
+    
     var data = req.query;
-    data.catagory = parseInt(data.catagory);
+    if(data.catagory == null) {
+        res.send("Failure");
+        return;
+    }
   
-
     updateOneCatagory(data);
     res.send("Success");
 });
