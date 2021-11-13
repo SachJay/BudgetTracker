@@ -60,29 +60,38 @@ app.get('/getInteractions', async(req, res, next) => {
         return;
     }
 
+    var result = {};
+    interactions.forEach(element => {
+        result[getFirstDayOfMonth(interactions.date)] 
+    });
+
     var catagories = await getCatagories();
 
-    var interactionByCatagory = {};
-    catagories.forEach(x => {
-        interactionByCatagory[x] = {
-            interactions: [],
-            totalCost: 0
-        };
+    
+
+    interactions.forEach(x => {
+        if(result[getFirstDayOfMonth(x.date)] == null) {
+            var interactionByCatagory = {};
+            catagories.forEach(x => {
+                interactionByCatagory[x] = {
+                    interactions: [],
+                    totalCost: 0
+                };
+            });
+            result[getFirstDayOfMonth(x.date)] = interactionByCatagory;
+        }
+
+         result[getFirstDayOfMonth(x.date)][catagoryTable[x.name] != null ? catagoryTable[x.name] : "Other"].interactions.push(x)
     });
 
-    interactions.forEach(x => interactionByCatagory[catagoryTable[x.name] != null ? catagoryTable[x.name] : "Other"].interactions.push(x));
-
-    Object.keys(interactionByCatagory).forEach(x => {
-        var total = 0;
-        interactionByCatagory[x].interactions.forEach(x => total = Number(total) + Number(x.cost));
-        interactionByCatagory[x].totalCost = total.toFixed(2);
+    Object.keys(result).forEach(month => {
+        Object.keys(result[month]).forEach(x => {
+            var total = 0;
+            result[month][x].interactions.forEach(y => total = Number(total) + Number(y.cost));
+            result[month][x].totalCost = total.toFixed(2);
+        });
     });
     
-    var result = {
-        data: interactionByCatagory,
-        totalCost: 0
-    }
-
     res.json(result);
 });
 
@@ -97,6 +106,13 @@ app.post('/deleteCatagory', async(req, res, next) => {
 app.listen(2020, () => {
     console.log('server is listening on port 2020');
 });
+
+function getFirstDayOfMonth(date) {
+    if(date == null) return "N/A";
+
+    var newDate = new Date();
+    return new Date(newDate.getFullYear(), newDate.getMonth(), 1).toString();
+}
 
 async function pullAll() {
     const client = new MongoClient(uri);
