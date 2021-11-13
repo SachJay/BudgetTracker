@@ -3,21 +3,26 @@
     <h1>Bank Statement Parser</h1>
 
     <input @change="onFileChange" type="file">
-   <button v-on:click="this.uploadInteraction()">Save</button>
+    <button v-on:click="this.uploadInteraction()">Save</button>
 
-    <div v-for="catagories in Object.keys(data)"  :key="catagories">
-      <Catagory :name="catagories" :interactions="data[catagories].interactions" :totalCost="parseInt(data[catagories].totalCost)"></Catagory>
+    <div v-for="month in Object.keys(data)"  :key="month">
+        {{ month }}
+         <div v-for="catagories in Object.keys(data[month])"  :key="catagories">
+          <Catagory :name="catagories" :interactions="data[month][catagories].interactions" :totalCost="parseInt(data[month][catagories].totalCost)"></Catagory>
+        </div> 
     </div>
+
+    
 
   </div>
 </template>
 
 <script>
-import Catagory from './Catagory.vue';
+ import Catagory from './Catagory.vue';
 import axios from 'axios';
 
   export default {
-    components: { Catagory },
+     components: { Catagory },
     data() {
       return {
         data: {},
@@ -28,7 +33,7 @@ import axios from 'axios';
   // GET request using fetch with async/await
       const response = await fetch("http://localhost:2020/getInteractions");
       const data = await response.json();
-      this.data = data.data;
+      this.data = data;
     }, 
     methods: {
       onFileChange(event) {
