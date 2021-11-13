@@ -70,7 +70,10 @@ app.get('/getInteractions', async(req, res, next) => {
     
 
     interactions.forEach(x => {
-        if(result[getFirstDayOfMonth(x.date)] == null) {
+
+        var date = getFirstDayOfMonth(x.date);
+        console.log(date);
+        if(result[date] == null) {
             var interactionByCatagory = {};
             catagories.forEach(x => {
                 interactionByCatagory[x] = {
@@ -78,10 +81,10 @@ app.get('/getInteractions', async(req, res, next) => {
                     totalCost: 0
                 };
             });
-            result[getFirstDayOfMonth(x.date)] = interactionByCatagory;
+            result[date] = interactionByCatagory;
         }
 
-         result[getFirstDayOfMonth(x.date)][catagoryTable[x.name] != null ? catagoryTable[x.name] : "Other"].interactions.push(x)
+         result[date][catagoryTable[x.name] != null ? catagoryTable[x.name] : "Other"].interactions.push(x)
     });
 
     Object.keys(result).forEach(month => {
@@ -110,7 +113,7 @@ app.listen(2020, () => {
 function getFirstDayOfMonth(date) {
     if(date == null) return "N/A";
 
-    var newDate = new Date();
+    var newDate = new Date(date);
     return new Date(newDate.getFullYear(), newDate.getMonth(), 1).toString();
 }
 
