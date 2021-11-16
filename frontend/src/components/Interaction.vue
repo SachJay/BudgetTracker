@@ -1,16 +1,17 @@
 <template>
   <div class="interaction">
     <div v-if="editing">
-      <p>{{ name }}: {{ cost }}</p>
-
-      <select v-model="inputValue">
+      <p>{{ name }}</p>
+     
+      <input v-model="displayNameInput"><br>
+      <select v-model="catagoryInput">
         <option v-for="catagory in catagories"  :key="catagory">{{catagory}}</option>
       </select>
 
       <button v-on:click="this.saveChange()">Submit</button>
     </div>
     <div v-else>
-      <p>{{ name }}: {{ cost }}</p>
+      <p>{{ displayName }}: {{ cost }}</p>
       <button v-on:click="this.getCatagories()">Change Catagory</button>
       <button>Delete</button>
     </div>
@@ -24,6 +25,7 @@ import axios from 'axios';
   components: { },
     props: {
         name: String,
+        displayName: String,
         id: String,
         cost: Number,
         catagory: Number
@@ -31,15 +33,16 @@ import axios from 'axios';
     data() {
       return { 
         editing: false,
-        inputValue: "",
+        catagoryInput: "",
+        displayNameInput: "",
         catagories: []
       }
     },
     methods: {
       saveChange() {
 
-        console.log(this.inputValue);
-        axios.post("http://localhost:2020/changeCatagory?name="+this.$props.name+"&catagory="+this.inputValue)
+        console.log(this.catagoryInput);
+        axios.post("http://localhost:2020/changeCatagory?name="+this.$props.name+"&catagory="+this.catagoryInput+"&displayName="+this.displayNameInput)
           .then(response => this.articleId = response.data.id);
 
         this.editing = !this.editing

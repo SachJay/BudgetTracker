@@ -4,7 +4,7 @@
     <h2>{{ name }} Total Cost: {{ totalCost }}</h2>
     <ul class="interactionBlock">
         <div class="singleInteraction" v-for="interact in interactions"  :key="interact._id">
-          <Interaction :id="interact._id" :name="interact.name" :cost ="parseInt(interact.cost)" :catagory="interact.catagory"></Interaction>
+          <Interaction :id="interact._id" :displayName="interact.displayName" :name="interact.name" :cost ="parseInt(interact.cost)" :catagory="interact.catagory"></Interaction>
         </div>
     </ul>
     <h3></h3>
