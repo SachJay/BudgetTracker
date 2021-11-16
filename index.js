@@ -68,6 +68,10 @@ app.get('/getInteractions', async(req, res, next) => {
     var catagories = await getCatagories();
 
     
+    interactions.map(x => {
+        x.displayName = catagoryTable[x.name] != null && catagoryTable[x.name].displayName != null ? catagoryTable[x.name].displayName : x.name;
+        return x;
+    });
 
     interactions.forEach(x => {
 
@@ -84,7 +88,7 @@ app.get('/getInteractions', async(req, res, next) => {
             result[date] = interactionByCatagory;
         }
 
-         result[date][catagoryTable[x.name] != null ? catagoryTable[x.name] : "Other"].interactions.push(x)
+         result[date][catagoryTable[x.name] != null && catagoryTable[x.name].catagory != null ? catagoryTable[x.name].catagory : "Other"].interactions.push(x);
     });
 
     Object.keys(result).forEach(month => {
@@ -180,7 +184,10 @@ async function getInteractionCatagoryTable() {
         result = await client.db("BudgetTracker").collection("InteractionCatagories").find().toArray();
         var table = {};
         result.forEach(x => {
-            table[x.name] = x.catagory;
+            table[x.name] = {
+                catagory: x.catagory,
+                displayName: x.displayName
+            };
         });
     } catch (e) {
         console.error(e);
