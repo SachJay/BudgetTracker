@@ -76,7 +76,7 @@ app.get('/getInteractions', async(req, res, next) => {
     interactions.forEach(x => {
 
         var date = getFirstDayOfMonth(x.date);
-        console.log(date);
+
         if(result[date] == null) {
             var interactionByCatagory = {};
             catagories.forEach(x => {
@@ -95,12 +95,16 @@ app.get('/getInteractions', async(req, res, next) => {
     Object.keys(result).forEach(month => {
         var totalMonthlyCost = 0;
         Object.keys(result[month].catagories).forEach(x => {
+            if(result[month].catagories[x] == null) return;
+
             var total = 0;
-            result[month].catagories[x].interactions.filter(x => x.catagories != "Internal").forEach(y => total = Number(total) + Number(y.cost));
+            result[month].catagories[x].interactions.forEach(y => total = Number(total) + Number(y.cost));
             result[month].catagories[x].totalCost = total.toFixed(2);
-            totalMonthlyCost += result[month].catagories[x].totalCost;
+
+            if(x != "Internal") {
+                totalMonthlyCost += parseInt(result[month].catagories[x].totalCost);
+            }
         });
-        totalMonthlyCost += totalMonthlyCost;
         result[month].totalMonthlyCost = totalMonthlyCost;
     });
     
