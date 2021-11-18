@@ -6,10 +6,11 @@
     <button v-on:click="this.uploadInteraction()">Save</button>
 
     <div v-for="month in Object.keys(data)"  :key="month">
-        {{ month }}
-         <div v-for="catagories in Object.keys(data[month])"  :key="catagories">
-          <Catagory :name="catagories" :interactions="data[month][catagories].interactions" :totalCost="parseInt(data[month][catagories].totalCost)"></Catagory>
-        </div> 
+        {{ month }} Total: {{ data[month].totalMonthlyCost }}
+         <div v-for="catagories in Object.keys(data[month].catagories)"  :key="catagories">
+          <Catagory :name="catagories" :interactions="data[month].catagories[catagories].interactions" :totalCost="parseInt(data[month].catagories[catagories].totalCost)"></Catagory>
+        </div>
+        
     </div>
 
     
