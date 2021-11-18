@@ -85,18 +85,23 @@ app.get('/getInteractions', async(req, res, next) => {
                     totalCost: 0
                 };
             });
-            result[date] = interactionByCatagory;
+            result[date] = {};
+            result[date].catagories = interactionByCatagory;
         }
 
-         result[date][catagoryTable[x.name] != null && catagoryTable[x.name].catagory != null ? catagoryTable[x.name].catagory : "Other"].interactions.push(x);
+         result[date].catagories[catagoryTable[x.name] != null && catagoryTable[x.name].catagory != null ? catagoryTable[x.name].catagory : "Other"].interactions.push(x);
     });
 
     Object.keys(result).forEach(month => {
-        Object.keys(result[month]).forEach(x => {
+        var totalMonthlyCost = 0;
+        Object.keys(result[month].catagories).forEach(x => {
             var total = 0;
-            result[month][x].interactions.forEach(y => total = Number(total) + Number(y.cost));
-            result[month][x].totalCost = total.toFixed(2);
+            result[month].catagories[x].interactions.filter(x => x.catagories != "Internal").forEach(y => total = Number(total) + Number(y.cost));
+            result[month].catagories[x].totalCost = total.toFixed(2);
+            totalMonthlyCost += result[month].catagories[x].totalCost;
         });
+        totalMonthlyCost += totalMonthlyCost;
+        result[month].totalMonthlyCost = totalMonthlyCost;
     });
     
     res.json(result);
