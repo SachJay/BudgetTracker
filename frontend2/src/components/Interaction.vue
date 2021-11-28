@@ -1,0 +1,78 @@
+<template>
+  <div class="interaction">
+    <b-card
+      :title="displayName"
+      tag="article"
+      style="max-width: 20rem;"
+      class="mb-2"
+    >
+     
+
+    <div v-if="editing">     
+      <input v-model="displayNameInput" type="text" name="displayName" />
+      <select v-model="catagoryInput">
+        <option v-for="catagory in catagories"  :key="catagory">{{catagory}}</option>
+      </select>
+
+      <button v-on:click="saveChange()">Submit</button>
+      <button v-on:click="updateEditing()">Cancel</button>
+    </div>
+    <div v-else>
+      <p>Cost: {{ cost }}</p>
+      <button v-on:click="getCatagories()">Change Catagory</button>
+      <button>Delete</button>
+    </div>
+
+    </b-card>
+
+
+
+
+
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+ export default {
+  components: { },
+    props: {
+        name: String,
+        displayName: String,
+        id: String,
+        cost: Number,
+        catagory: Number
+    },
+    data() {
+      return { 
+        editing: false,
+        catagoryInput: "",
+        displayNameInput: "",
+        catagories: []
+      }
+    },
+    methods: {
+      saveChange() {
+        axios.post("http://localhost:2020/changeCatagory?name="+this.$props.name+"&catagory="+this.catagoryInput+"&displayName="+this.displayNameInput)
+          .then(response => this.articleId = response.data.id);
+
+        this.editing = !this.editing
+      },
+      async getCatagories() {
+          this.updateEditing();
+          const response = await fetch("http://localhost:2020/getCatagoryTable");
+          this.catagories = await response.json();
+        
+      },
+      updateEditing() {
+        this.editing = !this.editing;
+      }
+    }
+  }
+</script>
+<style>
+  .interaction {
+    margin: 10px;
+  }
+</style>

@@ -1,33 +1,42 @@
 <template>
   <div class="hello">
-    <link rel="stylesheet" href="https://preview.oruga.io/cdn/oruga.min.css" />
-
     <h1>Bank Statement Parser</h1>
 
     <input @change="onFileChange" type="file">
     <button v-on:click="this.uploadInteraction()">Save</button>
 
-
      
+    <b-tabs content-class="mt-3">
+      <div v-for="month in Object.keys(data)"  :key="month">
 
-     <div v-for="month in Object.keys(data)"  :key="month">
-       
-          {{ month }} Total: {{ data[month].totalMonthlyCost }}
-          <div v-for="catagories in Object.keys(data[month].catagories)"  :key="catagories">
-            <Catagory :name="catagories" :interactions="data[month].catagories[catagories].interactions" :totalCost="parseInt(data[month].catagories[catagories].totalCost)"></Catagory>
-          </div>
+          <b-tab :title="getReadableDate(month)" active>
+              {{ month }} Total: {{ data[month].totalMonthlyCost }}
+
+      
+              <div v-for="catagories in Object.keys(data[month].catagories)"  :key="catagories">
+
+                <Catagory :name="catagories" :interactions="data[month].catagories[catagories].interactions" :totalCost="parseInt(data[month].catagories[catagories].totalCost)"></Catagory>
+             
+              </div>
+
+
+          </b-tab>
+
+        
+
+      </div>
+    </b-tabs>
      
-    </div>
-
 
     
 
   </div>
 </template>
 
-<script src="https://preview.oruga.io/cdn/oruga.min.js">
+<script>
  import Catagory from './Catagory.vue';
-import axios from 'axios';
+ import axios from 'axios';
+
   export default {
      components: { Catagory },
     data() {
@@ -55,8 +64,10 @@ import axios from 'axios';
           .then(response => console.log(response));
       },
       getReadableDate(date) {
+        var options = { year: 'numeric', month: 'long'};
+
         var dateVar = new Date(date)
-        return dateVar.toISOString().split('T')[0].toString();
+        return dateVar.toLocaleString('en-US', options);
       }
     }
     
@@ -79,5 +90,8 @@ import axios from 'axios';
   }
   a {
     color: #42b983;
+  }
+  .b-tabs {
+    width: 80%
   }
 </style>

@@ -7,7 +7,6 @@
           <Interaction :id="interact._id" :displayName="interact.displayName" :name="interact.name" :cost ="parseInt(interact.cost)" :catagory="interact.catagory"></Interaction>
         </div>
     </ul>
-    <h3></h3>
   </div>
 </template>
 
@@ -38,4 +37,5 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
   .singleInteraction {
     width: 33%;
   }
+
 </style>
