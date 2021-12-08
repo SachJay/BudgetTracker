@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 var fs = require("fs");
 const { MongoClient } = require('mongodb');
+const PORT = process.env.PORT || 2020;
 
 const uri = "mongodb+srv://test:test@cluster0.ke4o7.mongodb.net/Cluster0?retryWrites=true&w=majority";
 
@@ -119,8 +120,8 @@ app.post('/deleteCatagory', async(req, res, next) => {
     res.json("deleted catagory");
 });
 
-app.listen(2020, () => {
-    console.log('server is listening on port 2020');
+app.listen(PORT, () => {
+    console.log('server is listening on port %s', PORT);
 });
 
 function getFirstDayOfMonth(date) {
