@@ -28,8 +28,8 @@ app.post('/saveInteractions', (req, res, next) => {
             return {
                 date: interaction[0],
                 name: interaction[1],
-                cost: interaction[2] == "" ? 0 : parseInt(interaction[2]),
-                income: interaction[3] == "" ? 0 : parseInt(interaction[3]),
+                cost: interaction[2] == "" ? 0 : parseFloat(interaction[2]),
+                income: interaction[3] == "" ? 0 : parseFloat(interaction[3]),
                 amount: interaction[4]
             }
         });
@@ -102,7 +102,7 @@ app.get('/getInteractions', async(req, res, next) => {
             result[month].catagories[x].totalCost = total.toFixed(2);
 
             if(x != "Internal") {
-                totalMonthlyCost += parseInt(result[month].catagories[x].totalCost);
+                totalMonthlyCost += parseFloat(result[month].catagories[x].totalCost);
             }
         });
         result[month].totalMonthlyCost = totalMonthlyCost;
