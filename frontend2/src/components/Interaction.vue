@@ -52,19 +52,20 @@ import axios from 'axios';
         editing: false,
         catagoryInput: "",
         displayNameInput: "",
-        catagories: []
+        catagories: [],
+        url: process.env.NODE_ENV === 'development' ? 'http://localhost:2020' : 'https://budget-tracker-sjay.herokuapp.com'
       }
     },
     methods: {
       saveChange() {
-        axios.post("http://localhost:2020/changeCatagory?name="+this.$props.name+"&catagory="+this.catagoryInput+"&displayName="+this.displayNameInput)
+        axios.post(this.url + "/changeCatagory?name="+this.$props.name+"&catagory="+this.catagoryInput+"&displayName="+this.displayNameInput)
           .then(response => this.articleId = response.data.id);
 
         this.editing = !this.editing
       },
       async getCatagories() {
           this.updateEditing();
-          const response = await fetch("http://localhost:2020/getCatagoryTable");
+          const response = await fetch(this.url + "/getCatagoryTable");
           this.catagories = await response.json();
         
       },

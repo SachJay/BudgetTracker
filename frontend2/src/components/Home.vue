@@ -42,12 +42,13 @@
         file: "",
         activeTab: '0',
         showBooks: false,
-        multiline: false
+        multiline: false,
+        url: process.env.NODE_ENV === 'development' ? 'http://localhost:2020' : 'https://budget-tracker-sjay.herokuapp.com'
       }
     },
     async created() {
   // GET request using fetch with async/await
-      const response = await fetch("http://localhost:2020/getInteractions");
+      const response = await fetch(this.url + "/getInteractions");
       const data = await response.json();
       this.data = data;
     }, 
@@ -57,7 +58,7 @@
       },
       uploadInteraction() {
         console.log(this.file);
-        axios.post("http://localhost:2020/saveInteractions?file="+this.file)
+        axios.post(this.url + "/saveInteractions?file="+this.file)
           .then(response => console.log(response));
       },
       getReadableDate(date) {
