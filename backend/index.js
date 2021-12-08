@@ -90,7 +90,10 @@ app.get('/getInteractions', async(req, res, next) => {
             result[date].catagories = interactionByCatagory;
         }
 
-         result[date].catagories[catagoryTable[x.name] != null && catagoryTable[x.name].catagory != null ? catagoryTable[x.name].catagory : "Other"].interactions.push(x);
+        var monthlyData = result[date].catagories[catagoryTable[x.name] != null && catagoryTable[x.name].catagory != null ? catagoryTable[x.name].catagory : "Other"];
+        if(monthlyData != null) {
+            monthlyData.interactions.push(x);
+        }
     });
 
     Object.keys(result).forEach(month => {
@@ -118,10 +121,6 @@ app.post('/saveCatagory', async(req, res, next) => {
 
 app.post('/deleteCatagory', async(req, res, next) => {
     res.json("deleted catagory");
-});
-
-app.listen(port, () => {
-    console.log('server is listening on port %s', port);
 });
 
 function getFirstDayOfMonth(date) {
@@ -228,3 +227,7 @@ async function getCatagories() {
         return result.map(x => x.name);
     }
 }
+
+app.listen(port, () => {
+    console.log('server is listening on port %s', port);
+});
