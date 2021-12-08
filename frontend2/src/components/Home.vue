@@ -43,7 +43,7 @@
         activeTab: '0',
         showBooks: false,
         multiline: false,
-        url: process.env.NODE_ENV === 'development' ? 'http://localhost:2020' : 'https://budget-tracker-sjay.herokuapp.com'
+        url: 'https://budget-tracker-sjay.herokuapp.com'
       }
     },
     async created() {

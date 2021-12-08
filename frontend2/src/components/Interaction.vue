@@ -53,7 +53,7 @@ import axios from 'axios';
         catagoryInput: "",
         displayNameInput: "",
         catagories: [],
-        url: process.env.NODE_ENV === 'development' ? 'http://localhost:2020' : 'https://budget-tracker-sjay.herokuapp.com'
+        url: 'https://budget-tracker-sjay.herokuapp.com'
       }
     },
     methods: {
