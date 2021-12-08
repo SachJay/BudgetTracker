@@ -1,18 +1,19 @@
 <template>
 
-  <div class="catagory">
+  <div class="catagory" role="tablist">
 
     <b-card no-body class="mb-1">
       <b-card-header header-tag="header" class="p-1" role="tab">
-        <b-button block v-b-toggle="getTrimedName(name)" variant="info">{{ name }} Total Cost: {{ totalCost }}</b-button>
+        <b-button class="collapseButton"  v-b-toggle="getTrimedName(name)" variant="info">{{ name }} - {{ totalCost.toFixed(2) }}</b-button>
       </b-card-header>
-      <b-collapse :id="getTrimedName(name)" accordion="my-accordion" role="tabpanel">
+      <b-collapse visible  :id="getTrimedName(name)" role="tabpanel">
         <b-card-body>
+          <b-card-title>Total Cost: {{ totalCost.toFixed(2) }}</b-card-title>
           <b-card-text>
             
             <ul class="interactionBlock">
                 <div class="singleInteraction" v-for="interact in interactions"  :key="interact._id">
-                  <Interaction :id="interact._id" :displayName="interact.displayName" :name="interact.name" :cost ="parseInt(interact.cost)" :catagory="interact.catagory"></Interaction>
+                  <Interaction :id="interact._id" :displayName="interact.displayName == '' ? interact.name : interact.displayName"  :name="interact.name" :cost ="parseFloat(interact.cost).toFixed(2)" :catagory="interact.catagory"></Interaction>
                 </div>
             </ul>
             
@@ -52,6 +53,11 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
     margin: 10px;
     display:flex;
     flex-wrap: wrap;
+  }
+  .collapseButton {
+    width: 100%;
+    background-color: rgb(13,110,253);
+    color: white;
   }
 
 </style>

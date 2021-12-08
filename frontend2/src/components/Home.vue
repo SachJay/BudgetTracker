@@ -1,31 +1,28 @@
 <template>
-  <div class="hello">
-    <h1>Bank Statement Parser</h1>
-
-    <input @change="onFileChange" type="file">
-    <button v-on:click="this.uploadInteraction()">Save</button>
+  <div class="mainstage">
+    <b-card  class="mb-1">
+      <h1 left>Bank Statement Parser</h1>
+       <img alt="Vue logo" src="./../assets/bankparser.png"><br>
+      <input @change="onFileChange" type="file">
+      <button v-on:click="uploadInteraction()">Upload Interactions</button>
 
      
-    <b-tabs content-class="mt-3">
-      <div v-for="month in Object.keys(data)"  :key="month">
-
-          <b-tab :title="getReadableDate(month)" active>
-              {{ month }} Total: {{ data[month].totalMonthlyCost }}
-
-      
+    </b-card>
+   <br>
+    <b-card no-body  class="mb-1"
+    >
+      <b-tabs content-class="mt-3" card fill >
+        <div v-for="month in Object.keys(data)"  :key="month">
+            <b-tab  :title="getReadableDate(month)" active>
+              <h3>Total Monthly Cost: {{ data[month].totalMonthlyCost.toFixed(2) }}</h3><br>
               <div v-for="catagories in Object.keys(data[month].catagories)"  :key="catagories">
-
-                <Catagory :name="catagories" :interactions="data[month].catagories[catagories].interactions" :totalCost="parseInt(data[month].catagories[catagories].totalCost)"></Catagory>
-             
+                <Catagory :name="catagories" :interactions="data[month].catagories[catagories].interactions" :totalCost="parseFloat(data[month].catagories[catagories].totalCost)"></Catagory>
               </div>
-
-
-          </b-tab>
-
-        
-
-      </div>
-    </b-tabs>
+            </b-tab>
+        </div>
+      </b-tabs>
+    </b-card>
+    
      
 
     
@@ -59,7 +56,7 @@
         this.file = event.target.files[0].name;
       },
       uploadInteraction() {
-
+        console.log(this.file);
         axios.post("http://localhost:2020/saveInteractions?file="+this.file)
           .then(response => console.log(response));
       },
@@ -76,22 +73,32 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
   h3 {
     margin: 40px 0 0;
   }
   ul {
     list-style-type: none;
-    display: inline-block;
+
     padding: 0;
   }
   li {
-    display: inline-block;
+
     margin: 0 10px;
   }
   a {
     color: #42b983;
   }
-  .b-tabs {
-    width: 80%
+
+  .mainstage {
+    margin: 50px;
+  }
+
+  .tabss {
+    background-color: red;
+  }
+
+  button {
+    display: inline-block;
   }
 </style>

@@ -1,10 +1,13 @@
 <template>
   <div class="interaction">
     <b-card
-      :title="displayName"
       tag="article"
       style="max-width: 20rem;"
       class="mb-2"
+      header-bg-variant="primary"
+     header-text-variant="white"
+      :header="displayName"
+       border-variant="primary"
     >
      
 
@@ -41,7 +44,7 @@ import axios from 'axios';
         name: String,
         displayName: String,
         id: String,
-        cost: Number,
+        cost: String,
         catagory: Number
     },
     data() {
